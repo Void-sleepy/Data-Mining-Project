@@ -15,6 +15,9 @@ We implement and compare several tree-based classifiers and ensembles:
 * **AdaBoost**
 * **Gradient Boosting**
 * **XGBoost**
+* **Logistic Regression**
+* **Support Vector Machine (SVM)**
+* **Stacking Classifier** (Ensemble)
 
 Each model is configured to penalize false negatives for the minority class natively (e.g., `class_weight='balanced'`, `scale_pos_weight`, or balanced base estimators).
 
@@ -43,7 +46,10 @@ Data-Mining-Project/
 ├── random_forest.ipynb            # Random Forest Model
 ├── adaboost.ipynb                 # AdaBoost Ensemble
 ├── gradient_boosting.ipynb        # Gradient Boosting Machine
-└── xgboost.ipynb                  # Extreme Gradient Boosting (XGBoost)
+├── xgboost.ipynb                  # Extreme Gradient Boosting (XGBoost)
+├── logistic_regression.ipynb      # Logistic Regression Model
+├── svm.ipynb                      # Support Vector Machine (SVM)
+└── stacking.ipynb                 # Stacking Classifier Ensemble
 ```
 
 ## Usage
