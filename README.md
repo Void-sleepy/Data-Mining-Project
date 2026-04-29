@@ -1,148 +1,52 @@
-# Arabic ABSA (Aspect-Based Sentiment Analysis)
+# Credit Risk Prediction - Data Mining Project
 
-This repo contains two end-to-end pipelines for Arabic multi-aspect sentiment classification (8 aspects × 4 labels) designed for noisy, real customer reviews.
+This repository contains a comprehensive machine learning pipeline designed to predict credit risk (Loan Default). The project and its visualizations are structured and formatted for an IEEE academic paper, focusing on rigorous evaluation and the handling of highly imbalanced datasets.
 
-## What the system predicts
+## Overview
 
-Aspects (8):
-- food
-- service
-- price
-- cleanliness
-- delivery
-- ambiance
-- app_experience
-- general
+The goal of this project is to accurately predict whether a borrower will default on a loan (`loan_status` = 1) or not (0). Due to the highly imbalanced nature of credit risk data, standard accuracy is not a reliable metric. Therefore, the models are natively trained using class-weighting penalties and evaluated using advanced metrics well-suited for finance scopes and academic publishing.
 
-Labels (4): `positive`, `negative`, `neutral`, `none`
+## Models Evaluated
 
-## Two pipelines in this repo
+We implement and compare several tree-based classifiers and ensembles:
+* **Decision Tree** (Gini Impurity)
+* **Decision Tree** (Entropy / Information Gain)
+* **Random Forest**
+* **AdaBoost**
+* **Gradient Boosting**
+* **XGBoost**
 
-### 1) MARBERTv2 (script + training notebook)
+Each model is configured to penalize false negatives for the minority class natively (e.g., `class_weight='balanced'`, `scale_pos_weight`, or balanced base estimators).
 
-Uses `UBC-NLP/MARBERTv2` with a single classifier producing logits shaped `(batch, 8, 4)`.
+## Evaluation Metrics & Visualizations
 
-- Training (script): `train.py`
-- Inference + JSON: `inference.py`
-- Notebook version: `train_absa.ipynb`
-- Core modules: `dataset.py`, `model.py`
+To provide a thorough and academically rigorous comparison, each notebook outputs the following:
+* **Key Metrics**: Accuracy, Macro F1 Score, Matthews Correlation Coefficient (MCC), and Scikit-Learn Classification Reports.
+* **Confusion Matrix**: Test set performance breakdown (`N=5726`).
+* **ROC Curve**: Receiver Operating Characteristic curve.
+* **Precision-Recall Curve**: Essential for evaluating performance on the imbalanced minority class.
+* **Calibration Curve (Reliability Diagram)**: Analyzes how well the predicted probabilities align with actual default frequencies.
+* **Feature Importance**: Bar chart highlighting the most predictive features.
+* **Tree Visualizations**: Interpretability graphs mapping decision nodes.
 
-### 2) AraBERT multi-head (Hugging Face Trainer)
-
-Uses `aubmindlab/bert-base-arabertv02-twitter` with 8 separate “heads” (one head per aspect) trained together.
-
-- All-in-one notebook: `GGG_Pipeline.ipynb`
-- Scripted version: `GGG_train.py` + `GGG_*.py`
-
-## What we changed / fixed while building
-
-- Moved the workflow to Kaggle-friendly paths (so data can be loaded from `/kaggle/input/...`).
-- Updated preprocessing to work with the Kaggle CSV format (`text` column + direct aspect columns).
-- Added `accelerate` as a hard dependency (required by Hugging Face `Trainer`).
-- Made the custom `Trainer.compute_loss` forward-compatible with newer `transformers` versions.
-
-## Dataset formats
-
-### Kaggle CSV format (used by `cleaned_data/*.csv`)
-
-Expected columns:
-- `review_id`
-- `text`
-- 8 aspect columns (`food`, `service`, ...)
-
-Each aspect value is one of: `positive`, `negative`, `neutral`, `none`.
-
-### Excel format (older DeepX files)
-
-Some scripts/notebooks read `.xlsx` files from `Dataset/`. For that, `openpyxl` is required.
-
-## Installation (local)
-
-```bash
-python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-```
-
-If your Linux distro blocks global `pip` installs (PEP 668), always use a virtual environment.
-
-## Running on Kaggle
-
-1. Upload the notebook you want to run (`GGG_Pipeline.ipynb` or `train_absa.ipynb`).
-2. Add your dataset in the Kaggle sidebar (so it appears under `/kaggle/input/`).
-3. If you use `train_absa.ipynb`, also upload `dataset.py` and `model.py` (Kaggle won’t automatically have your local repo files).
-
-Tip: use a GPU runtime (T4/P100). 15GB VRAM makes training much smoother than 4GB.
-
-## Training (MARBERT script)
-
-```bash
-python train.py
-```
-
-Outputs are written under `checkpoints/`.
-
-## Inference (MARBERT)
-
-Example:
-
-```python
-from inference import ABSAPredictor
-
-predictor = ABSAPredictor("checkpoints/best_model.pt")
-print(predictor.predict_single("المكان ممتاز والخدمة رائعة"))
-```
-
-## Output JSON schema
-
-Each prediction is emitted as:
-
-```json
-{
-  "review_id": 23,
-  "aspects": ["service", "food"],
-  "aspect_sentiments": {
-    "service": "positive",
-    "food": "negative"
-  }
-}
-```
-
-Rules:
-- Aspects predicted as `none` are excluded.
-- If no aspects are predicted, `aspects` becomes `["none"]` and `aspect_sentiments` is `{}`.
-
-## Project structure (tree)
+## Project Structure
 
 ```text
-willwewin/
-  README.md
-  requirements.txt
-  
-  # Notebooks
-  GGG_Pipeline.ipynb
-  train_absa.ipynb
-  language_analysis.ipynb
-  a.ipynb
-  
-  # MARBERT pipeline (scripted)
-  dataset.py
-  model.py
-  train.py
-  inference.py
-  
-  # AraBERT multi-head pipeline (scripted)
-  GGG_config.py
-  GGG_preprocess.py
-  GGG_dataset.py
-  GGG_model.py
-  GGG_train.py
-  GGG_inference.py
-  
-  # Data
-  cleaned_data/
-  Dataset/
-  
-  # Outputs
-  checkpoints/
+Data-Mining-Project/
+├── dataset/
+│   ├── credit_risk_dataset.csv    # Raw dataset
+│   └── clean.csv                  # Preprocessed and cleaned dataset ready for modeling
+├── model_save/                    # Serialized models exported as .pkl (Pickle) files
+├── clean.ipynb                    # Data cleaning and preparation notebook
+├── decision_tree.ipynb            # Decision Tree Model (Gini)
+├── decision_tree_entropy.ipynb    # Decision Tree Model (Entropy)
+├── random_forest.ipynb            # Random Forest Model
+├── adaboost.ipynb                 # AdaBoost Ensemble
+├── gradient_boosting.ipynb        # Gradient Boosting Machine
+└── xgboost.ipynb                  # Extreme Gradient Boosting (XGBoost)
 ```
+
+## Usage
+
+1. **Data Preparation**: Start by running `clean.ipynb` to process `dataset/credit_risk_dataset.csv` and generate the standardized `dataset/clean.csv`.
+2. **Model Training & Evaluation**: Execute any of the model notebooks (e.g., `xgboost.ipynb`). The notebooks will load the cleaned data, train the model with class weights, display all IEEE-grade visualizations, and automatically save the trained model to the `model_save/` directory as a `.pkl` file.
