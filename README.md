@@ -15,6 +15,7 @@ We implement and compare several tree-based classifiers and ensembles:
 * **AdaBoost**
 * **Gradient Boosting**
 * **XGBoost**
+* **LightGBM** (Used in Ensemble)
 * **Logistic Regression**
 * **Support Vector Machine (SVM)**
 * **Stacking Classifier** (Ensemble)
@@ -24,8 +25,8 @@ Each model is configured to penalize false negatives for the minority class nati
 ## Evaluation Metrics & Visualizations
 
 To provide a thorough and academically rigorous comparison, each notebook outputs the following:
-* **Key Metrics**: Accuracy, Macro F1 Score, Matthews Correlation Coefficient (MCC), and Scikit-Learn Classification Reports.
-* **Confusion Matrix**: Test set performance breakdown (`N=5726`).
+* **Key Metrics**: Accuracy, Macro F1 Score, Matthews Correlation Coefficient (MCC), Area Under the ROC Curve (AUC ROC), and Scikit-Learn Classification Reports.
+* **Confusion Matrix**: Test set performance breakdown matrix.
 * **ROC Curve**: Receiver Operating Characteristic curve.
 * **Precision-Recall Curve**: Essential for evaluating performance on the imbalanced minority class.
 * **Calibration Curve (Reliability Diagram)**: Analyzes how well the predicted probabilities align with actual default frequencies.
@@ -54,5 +55,9 @@ Data-Mining-Project/
 
 ## Usage
 
-1. **Data Preparation**: Start by running `clean.ipynb` to process `dataset/credit_risk_dataset.csv` and generate the standardized `dataset/clean.csv`.
-2. **Model Training & Evaluation**: Execute any of the model notebooks (e.g., `xgboost.ipynb`). The notebooks will load the cleaned data, train the model with class weights, display all IEEE-grade visualizations, and automatically save the trained model to the `model_save/` directory as a `.pkl` file.
+1. **Install Dependencies**: First, install all required packages:
+   ```bash
+   pip install -r requirements.txt
+   ```
+2. **Data Preparation**: Start by running `clean.ipynb` to process `dataset/credit_risk_dataset.csv` and generate the standardized `dataset/clean.csv`.
+3. **Model Training & Evaluation**: Execute any of the model notebooks (e.g., `xgboost.ipynb`). The notebooks will load the cleaned data, train the model with class weights, display all IEEE-grade visualizations, and automatically save the trained model to the `model_save/` directory as a `.pkl` file.
