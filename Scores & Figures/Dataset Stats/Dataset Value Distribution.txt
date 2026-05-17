@@ -1,0 +1,10 @@
+cb_person_default_on_file
+N    23528
+Y     5102
+Name: count, dtype: int64
+
+After mapping:
+cb_person_default_on_file
+0    23528
+1     5102
+Name: count, dtype: int64

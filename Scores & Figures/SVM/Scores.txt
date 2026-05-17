@@ -1,0 +1,17 @@
+=== SVM ===
+
+Accuracy: 0.8802
+ROC AUC Score: 0.9107
+F1 Score (Macro): 0.8270
+Matthews Correlation Coefficient (MCC): 0.6542
+
+===========
+              precision    recall  f1-score   support
+
+           0       0.93      0.92      0.92      4479
+           1       0.72      0.75      0.73      1247
+
+    accuracy                           0.88      5726
+   macro avg       0.82      0.83      0.83      5726
+weighted avg       0.88      0.88      0.88      5726
+

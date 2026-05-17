@@ -1,0 +1,16 @@
+=== Decision Tree ===
+
+Accuracy: 0.9076
+ROC AUC Score: 0.9021
+F1 Score (Macro): 0.8566
+Matthews Correlation Coefficient (MCC): 0.7172
+
+              precision    recall  f1-score   support
+
+           0       0.92      0.96      0.94      4479
+           1       0.84      0.71      0.77      1247
+
+    accuracy                           0.91      5726
+   macro avg       0.88      0.84      0.86      5726
+weighted avg       0.90      0.91      0.90      5726
+
